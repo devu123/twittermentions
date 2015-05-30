@@ -37,7 +37,7 @@ if __name__ == '__main__':
         tweets_data=0
         
         for line in f:
-            if "chipotle" in line or "Chipotle" in line:
+            if "chipotle" in line:
                 tweets_data+=1
             
         print 'Number of matching tweets: %s' % tweets_data
