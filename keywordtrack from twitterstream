@@ -1,3 +1,4 @@
+import time
 #Import the necessary methods from tweepy library
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -12,32 +13,34 @@ consumer_secret = "dQcf06syfPXtyMY6uIZiqNbJG1HUkwTklcSCuhhSm7cW6cGBRL"
 #This is a basic listener that just prints received tweets to stdout.
 class StdOutListener(StreamListener):
     def on_data(self, data):
+        time.clock()
         data_file = open('twitter_data.txt', 'a')
         data_file.write(data)
         data_file.close()
-
+        if time.clock()>60:
+            return False
         return True
     def on_error(self, status):
         print status
  
 def grab_tweets():
     #This handles Twitter authentification and the connection to Twitter Streaming API
+    time.clock()
     l = StdOutListener()
     auth = OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     stream = Stream(auth, l)
     #This line filter Twitter Streams to capture data by the keywords: 'chipotle'
+    print "before filter"
     stream.filter(track=['chipotle'])
-
+    print "after filter"
+    return
 if __name__ == '__main__':
-    try:
-        grab_tweets()
-    except KeyboardInterrupt:
-        f=open("twitter_data.txt", "r")
-        tweets_data=0
-        
-        for line in f:
-            if "chipotle" in line:
-                tweets_data+=1
-            
-        print 'Number of matching tweets: %s' % tweets_data
+    grab_tweets()
+    print "did it "
+f=open("twitter_data.txt", "r")
+tweets_data=0
+for line in f:
+   if "chipotle" in line:
+        tweets_data+=1
+print 'Number of matching tweets: %s' % tweets_data
