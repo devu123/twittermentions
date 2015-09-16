@@ -3,6 +3,12 @@ import time
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
+#Import sys for command line changes
+import sys
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
 open('twitter_data.txt', 'w').close()
 #Variables that contains the user credentials to access Twitter API
 access_token = "2826782509-gHsY9mwiaIoH1x8cGxVxAe1348fVN23weWQLTcd"
@@ -17,7 +23,7 @@ class StdOutListener(StreamListener):
         data_file = open('twitter_data.txt', 'a')
         data_file.write(data)
         data_file.close()
-        if time.clock()>60:
+        if time.clock()>15:
             return False
         return True
     def on_error(self, status):
@@ -30,17 +36,32 @@ def grab_tweets():
     auth = OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     stream = Stream(auth, l)
-    #This line filter Twitter Streams to capture data by the keywords: 'chipotle'
+    #This line filter Twitter Streams to capture data by the argument variable keyword.
     print "before filter"
-    stream.filter(track=['chipotle'])
+    a=str(sys.argv[1])
+    stream.filter(track=[a])
     print "after filter"
     return
-if __name__ == '__main__':
+#this is now appending each new data point to a list
+if __name__ == "__main__":
+    alltweetsdata=[]
+    alltimedata=[]
+while __name__ == '__main__':
     grab_tweets()
+    first=time.clock()
     print "did it "
-f=open("twitter_data.txt", "r")
-tweets_data=0
-for line in f:
-   if "chipotle" in line:
-        tweets_data+=1
-print 'Number of matching tweets: %s' % tweets_data
+    f=open("twitter_data.txt", "r")
+    tweets_data=0
+    for line in f:
+        if sys.argv[1] in line:
+            tweets_data+=1
+    alltweetsdata.append(tweets_data)
+    alltimedata.append(first)
+    print 'Number of matching tweets: %s' % alltweetsdata
+    print "Time information: %s" % alltimedata
+#This is plotting the information starting with 2 points
+    if len(alltimedata)>1:
+    	plt.plot(alltimedata, alltweetsdata)
+    	plt.show()
+    print "good"
+ 
