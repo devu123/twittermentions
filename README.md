@@ -1,2 +1,2 @@
 # twittermentions
-Hey there! Github seems cool, writing in this to try it out and learn about commits.
+Hey there! This is a simple python script to graph the number of twitter comments for a specified hashtag, over time.
